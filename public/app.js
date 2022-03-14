@@ -20,6 +20,7 @@ let roomId = null;
 
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
+  document.querySelector('#screenBtn').addEventListener('click', openDisplayMedia);
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
   document.querySelector('#createBtn').addEventListener('click', createRoom);
   document.querySelector('#joinBtn').addEventListener('click', joinRoom);
@@ -198,6 +199,22 @@ async function openUserMedia(e) {
 
   console.log('Stream:', document.querySelector('#localVideo').srcObject);
   document.querySelector('#cameraBtn').disabled = true;
+  document.querySelector('#joinBtn').disabled = false;
+  document.querySelector('#createBtn').disabled = false;
+  document.querySelector('#hangupBtn').disabled = false;
+}
+
+async function openDisplayMedia(e) {
+  const stream = await navigator.mediaDevices.getDisplayMedia(
+      {video: true});
+  document.querySelector('#localVideo').srcObject = stream;
+  localStream = stream;
+  remoteStream = new MediaStream();
+  document.querySelector('#remoteVideo').srcObject = remoteStream;
+
+  console.log('Stream:', document.querySelector('#localVideo').srcObject);
+  document.querySelector('#cameraBtn').disabled = false;
+  document.querySelector('#screenBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = false;
   document.querySelector('#createBtn').disabled = false;
   document.querySelector('#hangupBtn').disabled = false;
